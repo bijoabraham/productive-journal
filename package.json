@@ -50,18 +50,52 @@
   "build": {
     "appId": "com.bijoabraham.productivejournal",
     "productName": "Productive Journal",
+    "copyright": "Copyright \u00a9 2026 Bijo Abraham",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
     "files": [
       "dist/**/*",
-      "dist-electron/**/*"
+      "dist-electron/**/*",
+      "package.json"
     ],
-    "directories": {
-      "output": "release"
-    },
+    "asarUnpack": [
+      "**/*.node"
+    ],
     "win": {
-      "target": "nsis"
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Productive Journal",
+      "artifactName": "Productive-Journal-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Productive-Journal-${version}-portable.${ext}"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "build/icon.png",
+      "category": "public.app-category.productivity"
     }
   }
 }

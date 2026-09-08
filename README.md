@@ -40,6 +40,30 @@ the app works fully offline and never sends anything anywhere.
 Specs: [`Productive_Journal_Spec.md`](./Productive_Journal_Spec.md) (functional/data),
 [`UI_Design_Presentation.md`](./UI_Design_Presentation.md) (layout/style).
 
+## Install on Windows
+
+Build the installer yourself:
+
+```bash
+npm install
+npm run dist
+```
+
+That writes two files into `release/`:
+
+| File | Use |
+| --- | --- |
+| `Productive-Journal-Setup-1.0.0.exe` | **Installer.** Adds a Desktop and Start-menu shortcut, so the app opens with a double-click like any other program. Installs per-user — no admin rights needed. |
+| `Productive-Journal-1.0.0-portable.exe` | **Portable.** A single file: double-click to run, nothing installed. Good for a USB stick. |
+
+Your journal is stored at
+`%APPDATA%\Productive Journal\productive-journal.db` and stays there when the
+app is uninstalled or updated.
+
+> **SmartScreen:** the build is unsigned, so Windows will show
+> "Windows protected your PC" the first time. Click **More info → Run anyway**.
+> Removing that warning requires a paid code-signing certificate.
+
 ## Commands
 
 | Command | What it does |
