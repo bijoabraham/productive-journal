@@ -1,0 +1,67 @@
+{
+  "name": "productive-journal",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A distraction-free desktop productivity journal.",
+  "author": "Bijo Abraham",
+  "type": "module",
+  "main": "dist-electron/electron/main.mjs",
+  "scripts": {
+    "dev": "concurrently -k -n VITE,ELECTRON -c cyan,magenta \"npm:dev:renderer\" \"npm:dev:electron\"",
+    "dev:renderer": "vite",
+    "dev:electron": "npm run build:electron && wait-on tcp:5173 && cross-env NODE_ENV=development electron .",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build:renderer": "tsc -b tsconfig.app.json && vite build",
+    "build": "npm run build:renderer && npm run build:electron",
+    "test:db": "npm run build:electron && electron scripts/db-smoke.mjs",
+    "test:ui": "npm run build && electron scripts/ui-verify.mjs",
+    "test": "npm run test:db && npm run test:ui",
+    "start": "npm run build && electron .",
+    "typecheck": "tsc -b tsconfig.app.json --noEmit false --emitDeclarationOnly false && tsc -p tsconfig.electron.json --noEmit",
+    "lint": "oxlint",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "postinstall": "electron-rebuild -f -w better-sqlite3",
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "better-sqlite3": "^12.4.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.6",
+    "electron-builder": "^26.0.12",
+    "oxlint": "^1.79.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2",
+    "wait-on": "^9.0.1"
+  },
+  "build": {
+    "appId": "com.bijoabraham.productivejournal",
+    "productName": "Productive Journal",
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    }
+  }
+}
