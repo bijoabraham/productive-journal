@@ -39,6 +39,7 @@ the app works fully offline and never sends anything anywhere.
 
 Specs: [`Productive_Journal_Spec.md`](./Productive_Journal_Spec.md) (functional/data),
 [`UI_Design_Presentation.md`](./UI_Design_Presentation.md) (layout/style).
+How it was built, and what testing caught: [`docs/build-log.md`](./docs/build-log.md).
 
 ## Install on Windows
 
