@@ -22,6 +22,11 @@ interface SchedulePanelProps {
  * The frame and header stay put while only the rows scroll. Rows size to their
  * content so a long entry wraps to the column width, and share any spare height
  * so the table fills its box on a taller window instead of leaving a gap.
+ *
+ * The focus ring is drawn *inside* the field (negative outline-offset). At the
+ * default positive offset it is painted outside the box, where the scrollbar
+ * covers its right edge and the scrolling list clips it top and bottom — so a
+ * focused row showed only part of its border.
  */
 export default function SchedulePanel({ date, schedule, onSetSlot, onBlur }: SchedulePanelProps) {
   const bySlot = new Map(schedule.map((item) => [item.TimeSlot, item.Description]));
@@ -131,7 +136,7 @@ function ScheduleRow({ slot, value, tint, ruled, onChange, onBlur }: ScheduleRow
         onBlur={onBlur}
         spellCheck={false}
         aria-label={`Activity at ${label}`}
-        className="block min-w-0 flex-1 resize-none overflow-hidden border-0 bg-transparent px-3 py-1 text-sm leading-snug text-body placeholder:text-faint focus:outline-none"
+        className="block min-w-0 flex-1 resize-none overflow-hidden border-0 bg-transparent px-3 py-1 text-sm leading-snug text-body placeholder:text-faint focus-visible:-outline-offset-2"
       />
     </li>
   );

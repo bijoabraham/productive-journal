@@ -32,37 +32,45 @@
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-html,
-body,
-#root {
-  height: 100%;
-}
+/*
+ * Base rules live in @layer base so utility classes can override them.
+ * Unlayered CSS beats anything in a layer regardless of specificity, so
+ * without this wrapper a Tailwind utility could never win against these
+ * rules — e.g. the schedule's inset focus ring would silently do nothing.
+ */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
 
-body {
-  margin: 0;
-  /* The app is a fixed desktop surface: the page itself never scrolls. */
-  overflow: hidden;
-  background-color: var(--color-paper);
-  color: var(--color-body);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+  body {
+    margin: 0;
+    /* The app is a fixed desktop surface: the page itself never scrolls. */
+    overflow: hidden;
+    background-color: var(--color-paper);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-/* Native checkboxes, tinted to the ink palette so nothing reads as "bright". */
-input[type="checkbox"] {
-  accent-color: var(--color-body);
-}
+  /* Native checkboxes, tinted to the ink palette so nothing reads as "bright". */
+  input[type="checkbox"] {
+    accent-color: var(--color-body);
+  }
 
-/* A single, consistent, low-contrast focus ring. */
-:focus-visible {
-  outline: 2px solid var(--color-muted);
-  outline-offset: 1px;
-  border-radius: 2px;
-}
+  /* A single, consistent, low-contrast focus ring. */
+  :focus-visible {
+    outline: 2px solid var(--color-muted);
+    outline-offset: 1px;
+    border-radius: 2px;
+  }
 
-/* Slim, unobtrusive scrollbars. */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #c9c9c3 transparent;
+  /* Slim, unobtrusive scrollbars. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #c9c9c3 transparent;
+  }
 }

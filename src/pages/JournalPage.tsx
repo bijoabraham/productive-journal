@@ -103,8 +103,8 @@ export default function JournalPage() {
       )}
 
       <main className="flex min-h-0 flex-1 gap-6">
-        {/* Column 1 — 25% */}
-        <div className="flex w-1/4 min-w-0 flex-col gap-6">
+        {/* Column 1 — 22.5% (25% less a tenth; the space goes to column 2) */}
+        <div className="flex w-[22.5%] min-w-0 flex-col gap-6">
           <GoalsPanel
             goals={entry.goals}
             onAdd={actions.addGoal}
@@ -127,8 +127,8 @@ export default function JournalPage() {
           />
         </div>
 
-        {/* Column 2 — 50% */}
-        <div className="flex w-1/2 min-w-0 flex-col">
+        {/* Column 2 — 52.5%, widened leftwards by what column 1 gave up */}
+        <div className="flex w-[52.5%] min-w-0 flex-col">
           <SchedulePanel
             date={date}
             schedule={entry.schedule}
@@ -137,7 +137,7 @@ export default function JournalPage() {
           />
         </div>
 
-        {/* Column 3 — 25% */}
+        {/* Column 3 — 25%, unchanged */}
         <div className="flex w-1/4 min-w-0 flex-col gap-6">
           <BrainDumpPanel
             value={entry.log.BrainDump}

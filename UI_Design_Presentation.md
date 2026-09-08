@@ -23,6 +23,8 @@ Changes from 1.0:
   reversing the 1.0 constraint that forbade them. They remain forbidden
   everywhere else.
 - §2.1 — Header gains the hourly-reminder toggle.
+- §2.2 — Column split is now 22.5 / 52.5 / 25; column 1 gave a tenth of its
+  width to the Time Block Schedule.
 - §3 — Productivity Score is computed from completions, with a manual override.
   It stays circles-only: no percentage is rendered.
 - §3 — Time Block Schedule is a ruled table with a date strip; entries wrap.
@@ -92,9 +94,15 @@ reads without relying on colour alone.
 
 ### 2.2 Main Content Grid (Below Header)
 *   `display: flex` or CSS Grid with 3 specific columns filling the remaining height.
-*   **Column 1 (Left):** 25% width.
-*   **Column 2 (Center):** 50% width.
+*   **Column 1 (Left):** 22.5% width.
+*   **Column 2 (Center):** 52.5% width.
 *   **Column 3 (Right):** 25% width.
+
+> **Changed in 1.1.** The split was 25 / 50 / 25. Column 1 gave up a tenth of its
+> width (25% → 22.5%) and the Time Block Schedule absorbed it, widening leftwards
+> to 52.5%. Column 3 is unchanged. Percentages are of the content area — the two
+> gaps sit outside them, so measured against the full width the columns read as
+> roughly 21.6 / 50.4 / 24.
 
 ---
 
@@ -148,6 +156,10 @@ This column contains a single, large component spanning the full height.
     *   The frame and date strip stay fixed while the rows scroll. Rows share any
         spare height, so on a taller window the table fills its box instead of
         leaving a gap beneath the last row.
+    *   The focus ring on an entry field is drawn **inside** the field (negative
+        `outline-offset`). At a positive offset it is painted outside the box,
+        where the scrollbar covers its right edge and the scrolling list clips it
+        top and bottom, so a focused row showed only part of its border.
 
 ### Column 3: Right (25% Width)
 This column contains two components, stacked vertically. Brain Dump takes the

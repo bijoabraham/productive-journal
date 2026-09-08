@@ -276,6 +276,23 @@ app.whenReady().then(async () => {
   await win.webContents.executeJavaScript(DRIVE);
   const r = JSON.parse(await win.webContents.executeJavaScript(ASSERT));
 
+  // The focus ring only renders while the window itself has focus, and a real
+  // notification fired earlier in the run can take it away — so reclaim focus
+  // before measuring, rather than reading a ring that is not being painted.
+  win.focus();
+  await new Promise((res) => setTimeout(res, 400));
+  const ring = JSON.parse(await win.webContents.executeJavaScript(`(() => {
+    const ta = document.querySelector('textarea[aria-label="Activity at 9 AM"]');
+    ta.focus();
+    const cs = getComputedStyle(ta);
+    return JSON.stringify({
+      focusVisible: ta.matches(':focus-visible'),
+      offset: parseFloat(cs.outlineOffset),
+      width: parseFloat(cs.outlineWidth),
+      style: cs.outlineStyle,
+    });
+  })()`));
+
   await new Promise((res) => setTimeout(res, 600));
   fs.writeFileSync(outPng, (await win.capturePage()).toPNG());
 
@@ -296,12 +313,13 @@ app.whenReady().then(async () => {
 
   console.log('\n— layout (§2) —');
   const [c1, c2, c3] = r.columnPercents;
-  check('columns are 1 : 2 : 1 (25/50/25 of the content area)',
-    Math.abs(c2 / c1 - 2) < 0.05 && Math.abs(c1 - c3) < 0.2,
-    `${r.columnPercents.join(' / ')} of full width; centre/side ratio ${(c2 / c1).toFixed(3)}`);
-  check('columns fill the width once gaps are added',
+  check('column 1 is a tenth narrower than column 3 (25% -> 22.5%)',
+    Math.abs(c1 / c3 - 0.9) < 0.01, `col1/col3 = ${(c1 / c3).toFixed(3)}, want 0.900`);
+  check('column 2 absorbed that width (52.5% vs 22.5%)',
+    Math.abs(c2 / c1 - 7 / 3) < 0.02, `col2/col1 = ${(c2 / c1).toFixed(3)}, want 2.333`);
+  check('columns still total the content area',
     Math.abs(c1 + c2 + c3 + r.gapPercent * 2 - 100) < 0.3,
-    `${(c1 + c2 + c3).toFixed(1)}% + 2 gaps of ${r.gapPercent.toFixed(1)}%`);
+    `${r.columnPercents.join(' / ')} + 2 gaps of ${r.gapPercent.toFixed(1)}%`);
   check('page itself does not scroll', r.pageScrolls === false, `scrolls=${r.pageScrolls}`);
   check('five cards + title, score intentionally card-less',
     r.headings.join('|') === 'Productive Journal|Goals for Today|Priority Tasks|Time Block Schedule|Brain Dump|Reminders',
@@ -359,6 +377,9 @@ app.whenReady().then(async () => {
     r.longSlotHeight > r.shortSlotHeight && r.longSlotOverflowsY === false,
     `long ${r.longSlotHeight}px vs short ${r.shortSlotHeight}px, innerScroll=${r.longSlotOverflowsY}`);
   check('nothing scrolls horizontally', r.listOverflowsX === false, `listOverflowsX=${r.listOverflowsX}`);
+  check('a focused slot shows its whole border (ring drawn inside the field)',
+    ring.focusVisible === true && ring.width > 0 && ring.style !== 'none' && ring.offset < 0,
+    `${ring.width}px ${ring.style} at offset ${ring.offset}px, focusVisible=${ring.focusVisible}`);
   check('Enter inserts a newline (not intercepted, keeps focus)',
     r.enterDefaultPrevented === false && r.enterKeptFocus === true,
     `defaultPrevented=${r.enterDefaultPrevented}, keptFocus=${r.enterKeptFocus}`);
