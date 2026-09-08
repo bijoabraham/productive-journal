@@ -1,7 +1,41 @@
 # Productive Journal
 
-A distraction-free, offline-first desktop productivity journal.
-Electron + React + TypeScript + Vite + Tailwind CSS + SQLite (better-sqlite3).
+A distraction-free, offline-first desktop productivity journal — one screen, one
+day, no accounts and no cloud. Everything is stored in a local SQLite file.
+
+![Productive Journal](./docs/screenshot.png)
+
+## Why
+
+I could always tell whether a day *felt* productive. What I could never do was
+look back at a day — or an hour — and say where the time actually went.
+
+Paper daily-log planners solve this well: priorities, the day's goals, an hourly
+time block, a brain dump, and a productivity rating, all on one spread you can
+see at a glance. What they don't do is let you look back across weeks, or add
+anything up.
+
+This is that page, as a desktop app. Same layout, same one-screen constraint,
+nothing extra.
+
+<img src="./docs/paper-original.jpg" alt="The paper daily log this is based on" width="520">
+
+*The planner page the layout is taken from.*
+
+## What it does
+
+- **Goals for Today** (up to 5) and **Priority Tasks** (up to 20) — checklists
+- **Time Block Schedule** — 7 AM to 10 PM, one row an hour, entries wrap
+- **Brain Dump** — free-form notes for whatever is in the way
+- **Reminders** — a second, separate checklist
+- **Productivity Score** — computed from what you actually completed, not guessed
+- **History** — step back day by day, or jump to any date; past days stay editable
+- **Hourly reminders** (optional, off by default) — a nudge when the current hour
+  is still blank, which is the whole point: the schedule has to be filled in as
+  the day happens
+
+Everything auto-saves. There is no save button, no login, and no network access —
+the app works fully offline and never sends anything anywhere.
 
 Specs: [`Productive_Journal_Spec.md`](./Productive_Journal_Spec.md) (functional/data),
 [`UI_Design_Presentation.md`](./UI_Design_Presentation.md) (layout/style).
@@ -13,9 +47,9 @@ Specs: [`Productive_Journal_Spec.md`](./Productive_Journal_Spec.md) (functional/
 | `npm run dev` | Vite dev server + Electron with hot reload |
 | `npm run build` | Type-check and build renderer (`dist/`) and main (`dist-electron/`) |
 | `npm start` | Build, then run the app in production mode |
-| `npm test` | Both suites below (191 checks) |
+| `npm test` | Both suites below (193 checks) |
 | `npm run test:db` | Database, productivity formula, reminder logic, settings (104 checks) |
-| `npm run test:ui` | End-to-end: drives the UI, asserts layout, persistence, notifications (87 checks) |
+| `npm run test:ui` | End-to-end: drives the UI, asserts layout, persistence, notifications (89 checks) |
 | `npm run rebuild` | Rebuild `better-sqlite3` against the Electron ABI |
 | `npm run dist` | Package an installer via electron-builder (`release/`) |
 
